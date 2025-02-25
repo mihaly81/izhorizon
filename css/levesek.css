@@ -1,0 +1,96 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #CDE7FF;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+button {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: white;
+    border-radius: 5px;
+ 
+}
+   button:hover {
+        background-color: rgb(8, 62, 163);
+        color:rgb(0, 162, 255);
+        transition-duration: 0.5s;
+        box-shadow: 2px 2px rgb(83, 82, 82);
+   }
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #CDE7FF;
+    color: black;
+    padding: 10px 20px;
+    z-index: 1000;
+    font-family: 'ADLaM Display', sans-serif;
+}
+header h1 {
+    font-size: 30px;
+    margin: 0;
+    text-align: centers;
+}
+
+.buttonleft {
+    font-size: 40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    
+}
+
+.leves-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.leves-item {
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.2s;
+}
+
+.leves-item:hover {
+    transform: scale(1.05);
+}
+
+.leves-item img {
+    width: 300px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.leves-item p {
+    margin: 10px 0 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.leves-item span {
+    color: #3235e9;
+}
+p{
+    font-size: 25px;
+}
