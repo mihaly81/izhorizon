@@ -54,10 +54,10 @@ nav a {
 
 
 
-.icon-home,
-.user,
-.icon-logout,
-.icon-gallery {
+.iconHome,
+.iconUser,
+.iconLogout,
+.iconGallery {
     display: flex;
     align-items: center;
 }
