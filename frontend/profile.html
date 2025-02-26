@@ -9,22 +9,38 @@
 
 </head>
 <body>
+    
     <div class="profile-container">
         <img src="/fotok/11-2025-01-14-logo_izhorizon.png" alt="Ízhorizon" class="logo">
         <img src="profile.jpg" alt="Profilkép" width="100">
 
         <h1>Profil módosítás</h1>
-
+        </label>
+    <div class="input">
         <input type="name" placeholder="Új felhasználónév">
-        <button>Felhasználónév módosítása</button>
+    </div>
 
-        <input type="psw" placeholder="Új jelszó">
-        <button>Jelszó módosítása</button>
+    <div class="input">
+        <input type="password" id="psw" placeholder="******">
+    </div>
 
-        <input type="file" class="file-input">
-        <button>Profilkép módosítása</button>
+    <div class="input">
+        <input type="password" id="psw2" placeholder="******">
+    </div>
 
-        <button id="btnSave">Mentés</button>
+    <div>
+        <div class="edit-pic">
+            <label for="fileUpload">
+                <i class="fa-solid fa-paperclip"></i>
+            </label>
+            <input type="file" id="fileUpload">
+        </div>
+
+        <div class="edit-button">
+            <button type="button">Mentés</button>
+        </div>
+    </div>
+
     </div>
 </body>
 <script src="/js/profile.js"></script>
