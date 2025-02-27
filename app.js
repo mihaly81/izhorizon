@@ -14,10 +14,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 app.use(cors({
-    origin: 'http://127.0.0.1:5500',
+    origin: 'http://127.0.0.1:5502',
     credentials: true
 }));
 app.use(cookieParser());
+
+
+// az uploads mappában lévő fájlok elérése
+app.use('/foods', express.static(path.join(__dirname, 'foods')));
+
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -172,21 +177,19 @@ app.post('/api/login', (req, res) => {
         });
     });
 });
+// logout
+app.post('/api/logout', authenticateToken, (req, res) => {
+    res.clearCookie('auth_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+    });
+    return res.status(200).json({ message: 'Sikeres kijelentkezés!' });
+});
 
 // tesztelés a jwt-re
 app.get('/api/logintest', authenticateToken, (req, res) => {
     return res.status(200).json({ message: 'bent vagy' });
-});
-
-// logout
-app.post('/api/logout', (req, res) => {
-    res.clearCookie('auth_token', {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'None',
-        maxAge: 0
-    });
-    res.status(200).json({ message: 'Sikeres kijelentkezés' });
 });
 
 // profile kép megjelenítése
