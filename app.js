@@ -133,7 +133,7 @@ app.post('/api/registration', (req, res) => {
 });
 
 // login
-app.post('/api/login', (req, res) => {
+app.post('/api/index', (req, res) => {
     const { email, psw } = req.body;
     const errors = [];
 
@@ -378,16 +378,15 @@ app.get('/api/images', authenticateToken, (req, res) => {
 });
 
 // új kép feltöltése
-app.post('/api/upload', authenticateToken, upload.single('img'), (req, res) => {
-    const food_id = req.user.id;
-    const img = req.file ? req.file.filename : null;
+app.post('/api/upload', authenticateToken, upload.single('images'), (req, res) => {
+    const images = req.file ? req.file.filename : null;
 
     if (img === null) {
         return res.status(400).json({ error: 'Válassz ki egy képet' });
     }
 
-    const sql = 'INSERT INTO uploads (upload_id, food_id, img) VALUES (NULL, ?, ?)';
-    pool.query(sql, [food_id, img], (err, result) => {
+    const sql = 'INSERT INTO uploads (upload_id, images) VALUES (NULL, ?)';
+    pool.query(sql, [images], (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Hiba az SQL-ben' });
         }
