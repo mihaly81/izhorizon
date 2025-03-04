@@ -156,7 +156,7 @@ app.post('/api/index', (req, res) => {
         }
 
         if (result.length === 0) {
-            return res.status(404).json({ error: 'A felhasználó nem találató' });
+            return res.status(404).json({ error: 'A felhasználó nem található' });
         }
 
         const user = result[0];
