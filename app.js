@@ -420,7 +420,7 @@ app.post('/api/foglalas', authenticateToken, (req, res) => {
     });
 });
 
-
+ 
 app.listen(PORT, () => {
     console.log(`IP: https://${HOSTNAME}:${PORT}`);
 });
