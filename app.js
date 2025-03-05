@@ -387,6 +387,7 @@ app.post('/api/upload', authenticateToken, upload.single('images'), (req, res) =
     const sql = 'INSERT INTO uploads (upload_id, images) VALUES (NULL, ?)';
     pool.query(sql, [images], (err, result) => {
         if (err) {
+            console.error(err)
             return res.status(500).json({ error: 'Hiba az SQL-ben' });
         }
 
@@ -398,7 +399,7 @@ app.post('/api/upload', authenticateToken, upload.single('images'), (req, res) =
 app.post('/api/foglalas', authenticateToken, (req, res) => {
     const { datum } = req.body;
     const felhasznalo_id = req.user.id;
-    // Ellenőrzés: minden mező kitöltve?
+    // Ellenőrzés: minden mező ki van e töltve
     if ( !datum ) {
         return res.status(400).json({ error: 'Minden mezőt ki kell tölteni!' });
     }
@@ -414,7 +415,7 @@ app.post('/api/foglalas', authenticateToken, (req, res) => {
 
         return res.status(201).json({ 
             message: 'Időpont sikeresen lefoglalva', 
-            foglalas_id: result.insertId 
+            foglalas_id: result.insertId
         });
     });
 });
