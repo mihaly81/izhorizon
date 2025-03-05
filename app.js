@@ -377,14 +377,13 @@ app.get('/api/images', authenticateToken, (req, res) => {
     });
 });
 
-// új kép feltöltése
+// Új kép feltöltése
 app.post('/api/upload', authenticateToken, upload.single('images'), (req, res) => {
     const images = req.file ? req.file.filename : null;
 
-    if (img === null) {
+    if (!req.file) {
         return res.status(400).json({ error: 'Válassz ki egy képet' });
     }
-
     const sql = 'INSERT INTO uploads (upload_id, images) VALUES (NULL, ?)';
     pool.query(sql, [images], (err, result) => {
         if (err) {
@@ -395,6 +394,32 @@ app.post('/api/upload', authenticateToken, upload.single('images'), (req, res) =
     });
 });
 
+// időpont foglalás
+app.post('/api/foglalas', authenticateToken, (req, res) => {
+    const { datum } = req.body;
+    const felhasznalo_id = req.user.id;
+    // Ellenőrzés: minden mező kitöltve?
+    if ( !datum ) {
+        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni!' });
+    }
+
+    // SQL lekérdezés az adatbázisba történő beszúráshoz
+    const sql = 'INSERT INTO foglalasok (foglalas_id, felhasznalo_id, datum) VALUES (NULL, ?, ?)';
+
+    pool.query(sql, [felhasznalo_id, datum], (err, result) => {
+        if (err) {
+            console.error('SQL hiba:', err);
+            return res.status(500).json({ error: 'Hiba történt a foglalás során' });
+        }
+
+        return res.status(201).json({ 
+            message: 'Időpont sikeresen lefoglalva', 
+            foglalas_id: result.insertId 
+        });
+    });
+});
+
+
 app.listen(PORT, () => {
     console.log(`IP: https://${HOSTNAME}:${PORT}`);
-}); 
+});
