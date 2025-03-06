@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 05. 10:43
--- Kiszolgáló verziója: 10.4.28-MariaDB
--- PHP verzió: 8.2.4
+-- Gép: 192.168.255.103
+-- Létrehozás ideje: 2025. Már 05. 11:38
+-- Kiszolgáló verziója: 11.4.2-MariaDB-log
+-- PHP verzió: 8.3.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `izhorizon`
+-- Adatbázis: `s136_db`
 --
 
 -- --------------------------------------------------------
@@ -51,6 +51,13 @@ CREATE TABLE `foglalasok` (
   `datum` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- A tábla adatainak kiíratása `foglalasok`
+--
+
+INSERT INTO `foglalasok` (`foglalas_id`, `felhasznalo_id`, `datum`) VALUES
+(1, 9, '2025-03-08 00:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -61,7 +68,6 @@ CREATE TABLE `foods` (
   `food_id` int(11) NOT NULL,
   `kategoria_id` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `img` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   `leiras` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -70,8 +76,8 @@ CREATE TABLE `foods` (
 -- A tábla adatainak kiíratása `foods`
 --
 
-INSERT INTO `foods` (`food_id`, `kategoria_id`, `price`, `img`, `name`, `leiras`) VALUES
-(1, 1, 500.00, 'zoldsegtal.jpg', 'zoldsegtal', 'zöldség');
+INSERT INTO `foods` (`food_id`, `kategoria_id`, `price`, `name`, `leiras`) VALUES
+(1, 1, 500.00, 'zoldsegtal', 'zöldség');
 
 -- --------------------------------------------------------
 
@@ -81,7 +87,7 @@ INSERT INTO `foods` (`food_id`, `kategoria_id`, `price`, `img`, `name`, `leiras`
 
 CREATE TABLE `uploads` (
   `upload_id` int(10) UNSIGNED NOT NULL,
-  `images` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `images` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -182,7 +188,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT a táblához `foglalasok`
 --
 ALTER TABLE `foglalasok`
-  MODIFY `foglalas_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `foglalas_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `foods`
