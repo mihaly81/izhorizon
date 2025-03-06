@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 app.use(cors({
-    origin: ['http://127.0.0.1:5502', 'https://izhorizon.netlify.app'],
+    origin: ['http://127.0.0.1:5502', 'https://izhorizon.netlify.app/'],
     credentials: true
 }));
 
@@ -379,22 +379,55 @@ app.get('/api/images', authenticateToken, (req, res) => {
 });
 
 // Új kép feltöltése
-app.post('/api/upload', authenticateToken, upload.single('images'), (req, res) => {
-    const images = req.file ? req.file.filename : null;
+app.post('/api/foods', authenticateToken, upload.single('img'), (req, res) => {
+    const img = req.file ? req.file.filename : null;
+    const { kategoria_id, price, name, leiras } = req.body;
 
+    // Ellenőrzés, hogy van-e kép
     if (!req.file) {
         return res.status(400).json({ error: 'Válassz ki egy képet' });
     }
-    const sql = 'INSERT INTO uploads (upload_id, images) VALUES (NULL, ?)';
-    pool.query(sql, [images], (err, result) => {
+
+    // Ellenőrzés, hogy a szükséges adatok át lettek-e adva
+    if (!kategoria_id || !price || !name || !leiras) {
+        return res.status(400).json({ error: 'Hiányzó adat(oka)t adtál meg' });
+    }
+
+    // Validáció: kategoria_id szám típusú
+    if (isNaN(kategoria_id)) {
+        return res.status(400).json({ error: 'A kategória ID szám kell hogy legyen' });
+    }
+
+    // Validáció: price szám típusú és pozitív szám
+    if (isNaN(price) || parseFloat(price) <= 0) {
+        return res.status(400).json({ error: 'Az árnak egy pozitív számnak kell lennie' });
+    }
+
+    // Validáció: name nem üres
+    if (typeof name !== 'string' || name.trim() === '') {
+        return res.status(400).json({ error: 'A név nem lehet üres' });
+    }
+
+    // Validáció: leiras nem üres
+    if (typeof leiras !== 'string' || leiras.trim() === '') {
+        return res.status(400).json({ error: 'A leírás nem lehet üres' });
+    }
+
+    // SQL lekérdezés
+    const sql = 'INSERT INTO foods (food_id, kategoria_id, price, img, name, leiras) VALUES (NULL, ?, ?, ?, ?, ?)';
+
+    // SQL lekérdezés futtatása
+    pool.query(sql, [kategoria_id, price, img, name, leiras], (err, result) => {
         if (err) {
-            console.error(err)
+            console.error(err);
             return res.status(500).json({ error: 'Hiba az SQL-ben' });
         }
 
+        // Sikeres adatfeltöltés válasz
         return res.status(201).json({ message: 'Kép feltöltve', upload_id: result.insertId });
     });
 });
+
 
 // időpont foglalás
 app.post('/api/foglalas', authenticateToken, (req, res) => {
