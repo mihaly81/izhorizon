@@ -177,6 +177,9 @@ app.post('/api/index', (req, res) => {
         }
 
         const user = result[0];
+        const szerepkor = user.szerepkor;
+        console.log(szerepkor);
+        
         bcrypt.compare(psw, user.psw, (err, isMatch) => {
             if (isMatch) {
                 const token = jwt.sign({ id: user.user_id }, JWT_SECRET, { expiresIn: '1y' });
@@ -188,7 +191,7 @@ app.post('/api/index', (req, res) => {
                     maxAge: 1000 * 60 * 60 * 24 * 30 * 12
                 });
 
-                return res.status(200).json({ message: 'Sikeres bejelentkezés', data.szerepkor });
+                return res.status(200).json({ message: 'Sikeres bejelentkezés', szerepkor });
             } else {
                 return res.status(401).json({ error: 'rossz a jelszó' });
             }
