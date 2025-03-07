@@ -140,6 +140,8 @@ app.post('/api/registration', (req, res) => {
 
         pool.query(sql, [email, hash, name], (err, result) => {
             if (err) {
+                console.log(`regisztráció hiba az adatbázisban: ${err}`);
+                
                 return res.status(500).json({ error: 'Az email már foglalt!' });
             }
             res.status(201).json({ message: 'Sikeres regisztráció! ' });
