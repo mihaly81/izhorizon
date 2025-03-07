@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended:true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: ['http://127.0.0.1:5502', 'https://izhorizon.netlify.app/'],
     credentials: true
@@ -43,13 +43,13 @@ const pool = mysql.createPool({
 
 const uploadDir = 'foods/';
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir)
         }
         cb(null, uploadDir);
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         const now = new Date().toISOString().split('T')[0];
         cb(null, `${req.user.id}-${now}-${file.originalname}`);
     }
@@ -57,15 +57,15 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: { fileSize: 10 * 1024 * 1024 },
-    fileFilter: function(req, file, cb) {
+    fileFilter: function (req, file, cb) {
         const filetypes = /jpeg|jpg|png|gif|webp|avif/;
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = filetypes.test(file.mimetype);
 
-        if(extname && mimetype) {
+        if (extname && mimetype) {
             return cb(null, true);
         } else {
-            cb(new Error('Csak képformátumok megengedettek!'));       
+            cb(new Error('Csak képformátumok megengedettek!'));
         }
     }
 });
@@ -86,15 +86,29 @@ function authenticateToken(req, res, next) {
         next();
     });
 }
+
 // szerepkör ellenőrzése
 app.get('/api/szerepkor', authenticateToken, (req, res) => {
-    const szerepkor = req.user.szerepkor;
+    const user_id = req.user.id;
+    console.log(user_id);
+    
+    const sql = 'SELECT szerepkor FROM users WHERE user_id = ?';
 
-    if (typeof szerepkor === 'undefined' || szerepkor != 1) {
-        errors.push({ error: 'Hiba: Nincs jogosultságod!' });
-    }
-    res.json({ role: szerepkor});
+    pool.query(sql, [user_id], (err, result) => {
+        if (err) {
+            console.log(`szerepkör ellenőrzés: ${err}`);
+            return res.status(500).json('Hiba az SQL-ben a szerepkörnél');
+        }
+        console.log(result);
+        
+        if (result.szerepkor !== 1) {
+            return res.status(404).json({ error: 'Nincs admin jogod', szerepkor });
+        }
+
+        return res.status(200).json(szerepkor);
+    })
 });
+
 
 // regisztráció
 app.post('/api/registration', (req, res) => {
@@ -139,7 +153,7 @@ app.post('/api/index', (req, res) => {
     const errors = [];
 
     if (!validator.isEmail(email)) {
-        errors.push({ error: 'Add meg az email címet '});
+        errors.push({ error: 'Add meg az email címet ' });
     }
 
     if (validator.isEmpty(psw)) {
@@ -164,11 +178,11 @@ app.post('/api/index', (req, res) => {
         bcrypt.compare(psw, user.psw, (err, isMatch) => {
             if (isMatch) {
                 const token = jwt.sign({ id: user.user_id }, JWT_SECRET, { expiresIn: '1y' });
-                
+
                 res.cookie('auth_token', token, {
                     httpOnly: true,
                     secure: true,
-                    sameSite: 'none',
+                    sameSite: 'lax',
                     maxAge: 1000 * 60 * 60 * 24 * 30 * 12
                 });
 
@@ -184,7 +198,7 @@ app.post('/api/logout', authenticateToken, (req, res) => {
     res.clearCookie('auth_token', {
         httpOnly: true,
         secure: true,
-        sameSite: 'none'
+        sameSite: 'lax'
     });
     return res.status(200).json({ message: 'Sikeres kijelentkezés!' });
 });
@@ -197,7 +211,7 @@ app.get('/api/logintest', authenticateToken, (req, res) => {
 // profile kép megjelenítése
 app.get('/api/getpfp', authenticateToken, (req, res) => {
     const user_id = req.user.id;
-
+    console.log(user_id);
     const sql = 'SELECT pfp FROM users WHERE user_id = ?';
     pool.query(sql, [user_id], (err, result) => {
         if (err) {
@@ -216,7 +230,7 @@ app.get('/api/getpfp', authenticateToken, (req, res) => {
 app.put('/api/editPfp', authenticateToken, upload.single('pfp'), (req, res) => {
     const user_id = req.user.id;
     const pfp = req.file ? req.file.filename : null;
-
+    console.log(user_id);
     const sql = 'UPDATE users SET pfp = COALESCE(NULLIF(?, ""), pfp) WHERE user_id = ?';
 
     pool.query(sql, [pfp, user_id], (err, result) => {
@@ -228,10 +242,11 @@ app.put('/api/editPfp', authenticateToken, upload.single('pfp'), (req, res) => {
     });
 });
 
+/*
 // admin login
 
 app.post('/api/admin', (req, res) => {
-    const { email, psw, szerepkor } = req.body;
+    const { email, psw } = req.body;
     const errors = [];
 
     if (!validator.isEmail(email)) {
@@ -247,66 +262,64 @@ app.post('/api/admin', (req, res) => {
     }
 
     if (errors.length > 0) {
-    return res.status(400).json({ errors });
-}
-
-const sql = 'SELECT * FROM users WHERE email LIKE ?';
-pool.query(sql, [email], (err, result) => {
-    if (err) {
-        return res.status(500).json({ error: 'Hiba az SQL-ben' });
+        return res.status(400).json({ errors });
     }
 
-    if (result.length === 0) {
-        return res.status(404).json({ error: 'A felhasználó nem találató' });
-    }
+    const sql = 'SELECT * FROM users WHERE email LIKE ?';
+    pool.query(sql, [email], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben' });
+        }
 
-    const user = result[0];
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'A felhasználó nem találató' });
+        }
+
+        const user = result[0];
         if (user.szerepkor !== 1) {
             return res.status(403).json({ error: 'Nincs admin jogosultság!' });
         }
 
-    bcrypt.compare(psw, user.psw, (err, isMatch) => {
-        if (err) {
-            return res.status(500).json({ error: 'Hiba a jelszó ellenőrzése során!' });
-        }
+        bcrypt.compare(psw, user.psw, (err, isMatch) => {
+            if (err) {
+                return res.status(500).json({ error: 'Hiba a jelszó ellenőrzése során!' });
+            }
 
-        if (isMatch) {
-            const token = jwt.sign({ id: user.user_id, szerepkor: user.szerepkor}, JWT_SECRET, { expiresIn: '1y' });
+            if (isMatch) {
+                const token = jwt.sign({ id: user.user_id, szerepkor: user.szerepkor }, JWT_SECRET, { expiresIn: '1y' });
 
-            res.cookie('auth_token', token, {
-                httpOnly: true,
-                secure: false,
-                sameSite: 'None',
-                maxAge: 1000 * 60 * 60 * 24 * 30 * 12
-            });
+                res.cookie('auth_token', token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'lax',
+                    maxAge: 1000 * 60 * 60 * 24 * 30 * 12
+                });
 
-            return res.status(200).json({ message: 'Sikeres admin bejelentkezés' });
-        } else {
-            return res.status(401).json({ error: 'Rossz a jelszó' });
-        }
-
-        
-
+                return res.status(200).json({ message: 'Sikeres admin bejelentkezés' });
+            } else {
+                return res.status(401).json({ error: 'Rossz a jelszó' });
+            }
+        });
     });
 });
-});
+*/
 
 // profil szerkesztése
 app.put('/api/editProfile', authenticateToken, upload.single('pfp'), (req, res) => {
     const { name, psw } = req.body;
     const user_id = req.user.id;
     const pfp = req.file ? req.file.filename : null;
-    
+    console.log(user_id);
     if (!validator.isLength(psw, { min: 6 })) {
-        return res.status(400).json({ error: 'A jelszónak legalább 6 hosszúnak kell lenni '});
+        return res.status(400).json({ error: 'A jelszónak legalább 6 hosszúnak kell lenni ' });
     }
-    
+
     console.log(user_id, profile_pic);
     const sql = 'UPDATE users SET name = COALESCE(NULLIF(?, ""), name), psw = COALESCE(NULLIF(?, ""), psw), pfp = COALESCE(NULLIF(?, ""), pfp) WHERE user_id = ?';
 
     bcrypt.hash(psw, 10, (err, hash) => {
         if (err) {
-            return res.status(500).json({ error: 'Hiba a sózáskor! '});
+            return res.status(500).json({ error: 'Hiba a sózáskor! ' });
         }
 
         pool.query(sql, [name, hash, pfp, user_id], (err, result) => {
@@ -319,6 +332,27 @@ app.put('/api/editProfile', authenticateToken, upload.single('pfp'), (req, res) 
     });
 });
 
+//az összes food lekérdezése képekkel, leírásokkkal, mindennel
+app.get('/api/getFoods', authenticateToken, (req, res) => {
+    const user_id = req.user.id;
+    console.log(user_id);
+    const sql = 'SELECT * FROM foods JOIN categories USING(kategoria_id)';
+
+    pool.query(sql, (err, result) => {
+        if (err) {
+            console.log(`hiba a foods lekérdezésekor: ${err}`);
+            return res.status(502).json({ error: `Hiba az SQL-ben` });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json('Nincs megjeleníthető étel');
+        }
+
+        console.log(result);
+        return res.status(200).json(result); 
+    });
+});
+/*
 // az összes kép lekérdezése
 app.get('/api/images', authenticateToken, (req, res) => {
     const sql = 'SELECT food.food_id, food.kategoria_id, food.img, food.price, food.name, users.pfp';
@@ -335,6 +369,7 @@ app.get('/api/images', authenticateToken, (req, res) => {
         return res.status(200).json(result);
     });
 });
+*/
 
 // Új kép feltöltése
 app.post('/api/foods', authenticateToken, upload.single('img'), (req, res) => {
@@ -392,7 +427,7 @@ app.post('/api/foglalas', authenticateToken, (req, res) => {
     const { datum } = req.body;
     const felhasznalo_id = req.user.id;
     // Ellenőrzés: minden mező ki van e töltve
-    if ( !datum ) {
+    if (!datum) {
         return res.status(400).json({ error: 'Minden mezőt ki kell tölteni!' });
     }
 
@@ -405,14 +440,14 @@ app.post('/api/foglalas', authenticateToken, (req, res) => {
             return res.status(500).json({ error: 'Hiba történt a foglalás során' });
         }
 
-        return res.status(201).json({ 
-            message: 'Időpont sikeresen lefoglalva', 
+        return res.status(201).json({
+            message: 'Időpont sikeresen lefoglalva',
             foglalas_id: result.insertId
         });
     });
 });
 
- 
+
 app.listen(PORT, () => {
     console.log(`IP: https://${HOSTNAME}:${PORT}`);
 });
