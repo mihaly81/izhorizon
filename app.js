@@ -188,7 +188,7 @@ app.post('/api/index', (req, res) => {
                     maxAge: 1000 * 60 * 60 * 24 * 30 * 12
                 });
 
-                return res.status(200).json({ message: 'Sikeres bejelentkezés' });
+                return res.status(200).json({ message: 'Sikeres bejelentkezés', data.szerepkor });
             } else {
                 return res.status(401).json({ error: 'rossz a jelszó' });
             }
