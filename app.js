@@ -389,15 +389,16 @@ app.post('/api/foods', authenticateToken, upload.single('img'), (req, res) => {
 
 // időpont foglalás
 app.post('/api/foglalas', authenticateToken, (req, res) => {
-    const { datum } = req.body;
+    const { datum, ido } = req.body;
     const felhasznalo_id = req.user.id;
     // Ellenőrzés: minden mező ki van e töltve
-    if ( !datum ) {
-        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni!' });
+    if ( !datum || !ido) {
+        return res.status(400).json({ error: 'Mindent tölts ki!' });
     }
+    const datumIdo = `${datum} ${ido}:00`; // Például: "2025-03-15 12:00:00"
 
     // SQL lekérdezés az adatbázisba történő beszúráshoz
-    const sql = 'INSERT INTO foglalasok (foglalas_id, felhasznalo_id, datum) VALUES (NULL, ?, ?)';
+    const sql = 'INSERT INTO foglalasok (foglalas_id, felhasznalo_id, datum, ido) VALUES (NULL, ?, ?, ?)';
 
     pool.query(sql, [felhasznalo_id, datum], (err, result) => {
         if (err) {
