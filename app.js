@@ -435,8 +435,8 @@ app.post('/api/foglalas', authenticateToken, (req, res) => {
         return res.status(400).json({ error: 'Minden mezőt ki kell tölteni!' });
     }
 
-    // Convert the date to a valid SQL DATE format (YYYY-MM-DD)
-    const formattedDate = new Date(datum).toISOString().split('T')[0];
+    // The date is already in YYYY-MM-DD format, so no conversion is needed
+    const formattedDate = datum;
 
     // SQL query to insert the reservation
     const sql = 'INSERT INTO foglalasok (foglalas_id, felhasznalo_id, datum, ido) VALUES (NULL, ?, ?, ?)';
