@@ -426,21 +426,22 @@ app.post('/api/foods', authenticateToken, upload.single('img'), (req, res) => {
     });
 });
 
-//időpont foglalás
 app.post('/api/foglalas', authenticateToken, (req, res) => {
     const { datum, ido } = req.body;
     const felhasznalo_id = req.user.id;
-    // Ellenőrzés: minden mező ki van e töltve
-    console.log(datum, ido);
-    if ( !datum || !ido) {
-        return res.status(400).json({ error: 'Mindent tölts ki!' });
-    }
-    const datumIdo = `${datum} ${ido}:00`; // Például: "2025-03-15 12:00:00"
 
-    // SQL lekérdezés az adatbázisba történő beszúráshoz
+    // Validate input
+    if (!datum || !ido) {
+        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni!' });
+    }
+
+    // Convert the date to a valid SQL DATE format (YYYY-MM-DD)
+    const formattedDate = new Date(datum).toISOString().split('T')[0];
+
+    // SQL query to insert the reservation
     const sql = 'INSERT INTO foglalasok (foglalas_id, felhasznalo_id, datum, ido) VALUES (NULL, ?, ?, ?)';
 
-    pool.query(sql, [felhasznalo_id, datum], (err, result) => {
+    pool.query(sql, [felhasznalo_id, formattedDate, ido], (err, result) => {
         if (err) {
             console.error('SQL hiba:', err);
             return res.status(500).json({ error: 'Hiba történt a foglalás során' });
