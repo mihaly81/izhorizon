@@ -431,6 +431,7 @@ app.post('/api/foglalas', authenticateToken, (req, res) => {
     const { datum, ido } = req.body;
     const felhasznalo_id = req.user.id;
     // Ellenőrzés: minden mező ki van e töltve
+    console.log(datum, ido);
     if ( !datum || !ido) {
         return res.status(400).json({ error: 'Mindent tölts ki!' });
     }
