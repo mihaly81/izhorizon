@@ -319,7 +319,7 @@ app.put('/api/editProfile', authenticateToken, upload.single('pfp'), (req, res) 
         return res.status(400).json({ error: 'A jelszónak legalább 6 hosszúnak kell lenni ' });
     }
 
-    console.log(user_id, profile_pic);
+    console.log(user_id, pfp);
     const sql = 'UPDATE users SET name = COALESCE(NULLIF(?, ""), name), psw = COALESCE(NULLIF(?, ""), psw), pfp = COALESCE(NULLIF(?, ""), pfp) WHERE user_id = ?';
 
     bcrypt.hash(psw, 10, (err, hash) => {
@@ -357,24 +357,6 @@ app.get('/api/getFoods', authenticateToken, (req, res) => {
         return res.status(200).json(result); 
     });
 });
-/*
-// az összes kép lekérdezése
-app.get('/api/images', authenticateToken, (req, res) => {
-    const sql = 'SELECT food.food_id, food.kategoria_id, food.img, food.price, food.name, users.pfp';
-
-    pool.query(sql, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
-        }
-
-        if (result.length === 0) {
-            return res.status(404).json({ error: 'Nincs még kép' });
-        }
-
-        return res.status(200).json(result);
-    });
-});
-*/
 
 // Új kép feltöltése
 app.post('/api/foods', authenticateToken, upload.single('img'), (req, res) => {
