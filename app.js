@@ -377,7 +377,7 @@ app.get('/api/getFoodsByCategory/:kategoria_id', authenticateToken, (req, res) =
     const { kategoria_id } = req.params;
     console.log(kategoria_id);
 
-    const sql = 'SELECT * FROM foods JOIN categories USING(kategoria_id) WHERE categories.kategoria_id = ?';
+    const sql = 'SELECT * FROM foods JOIN categories USING(kategoria_id) WHERE categories.nev = ?';
     
     pool.query(sql, [kategoria_id], (err, result) => {
         if (err) {
