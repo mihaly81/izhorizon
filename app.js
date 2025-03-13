@@ -372,6 +372,27 @@ app.get('/api/getCategories', authenticateToken, (req, res) => {
     });
 });
 
+//összes étel lekérdezése kategória alapján
+app.get('/api/getFoodsByCategory/:kategoria_id', authenticateToken, (req, res) => {
+    const { kategoria_id } = req.params;
+    console.log(kategoria_id);
+
+    const sql = 'SELECT * FROM foods JOIN categories USING(kategoria_id) WHERE categories.kategoria_id = ?';
+    
+    pool.query(sql, [kategoria_id], (err, result) => {
+        if (err) {
+            console.log(`Hiba a /api/getFoodsByCategory/:kategoria_id-nál az sql-ben: ${err}`);
+            return res.status(500).json({ error: 'Hiba az sql-ben.' });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Nincs ilyen kategóriában étel' });
+        }
+
+        return res.status(200).json(result);
+    });
+});
+
 // Új kép feltöltése
 app.post('/api/foods', authenticateToken, upload.single('img'), (req, res) => {
     const img = req.file ? req.file.filename : null;
