@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 
 // a foods mappában lévő fájlok elérése
-app.use('/uploads', express.static(path.join(__dirname, 'foods')));
+app.use('/foods', express.static(path.join(__dirname, 'foods')));
 
 
 dotenv.config();
