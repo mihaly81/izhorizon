@@ -21,7 +21,7 @@ app.use(cors({
 app.use(cookieParser());
 
 
-// az uploads mappában lévő fájlok elérése
+// a foods mappában lévő fájlok elérése
 app.use('/foods', express.static(path.join(__dirname, 'foods')));
 
 
@@ -226,7 +226,6 @@ app.get('/api/getpfp', authenticateToken, (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({ error: 'A felhasználó nem található' });
         }
-
         return res.status(200).json(result);
     });
 });
@@ -340,12 +339,9 @@ app.put('/api/editProfile', authenticateToken, upload.single('pfp'), (req, res) 
 //az összes food lekérdezése képekkel, leírásokkkal, mindennel
 app.get('/api/getFoods', authenticateToken, (req, res) => {
     const user_id = req.user.id;
-    console.log(user_id);
     const sql = 'SELECT * FROM foods JOIN categories USING(kategoria_id)';
-
-    pool.query(sql, (err, result) => {
+    pool.query(sql, [user_id], (err, result) => {
         if (err) {
-            console.log(`hiba a foods lekérdezésekor: ${err}`);
             return res.status(502).json({ error: `Hiba az SQL-ben` });
         }
 
