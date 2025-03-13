@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: ['http://127.0.0.1:5502', 'https://izhorizon.netlify.app/'],
+    origin: ['http://127.0.0.1:5502', 'https://izhorizon.netlify.app'],
     credentials: true
 }));
 
@@ -351,6 +351,24 @@ app.get('/api/getFoods', authenticateToken, (req, res) => {
 
         console.log(result);
         return res.status(200).json(result); 
+    });
+});
+
+// az összes kategória lekérdezése
+app.get('/api/getCategories', authenticateToken, (req, res) => {
+    const sql = 'SELECT * FROM categories';
+
+    pool.query(sql, (err, result) => {
+        if (err) {
+            console.log(`hiba: /api/getCategories: ${err}`);
+            return res.status(500).json({ error: 'Hiba az SQL-ben' });
+        }
+
+        if (result.length < 1) {
+            return res.status(404).json({ error: 'Nincs kategória' });
+        }
+
+        return res.status(200).json(result);
     });
 });
 
