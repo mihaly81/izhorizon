@@ -14,7 +14,7 @@
 ---
 *  A Node.js alapú backend rendszer Epxress keretrendszert használ, MySql adatbázissal kommunikál, és számos biztonsági funkcióval rendelkezik (jelszó titkosítás, JWT hitelesítés, adatvalidálás).
 
-** Használt packagek:
+## Használt packagek:
 -  [nodemon](https://www.npmjs.com/package/nodemon)
 -  [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 -  [cookie-parser](https://www.npmjs.com/package/cookie-parser) 
