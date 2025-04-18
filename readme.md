@@ -13,9 +13,9 @@
 - [Licenc](#licenc)
 
 ---
-# A projektről röviden
+# Bevezetes
 
-bevezetes
+
 
 - Projektünk ezen részébe is, mint a Frontendbe, nagy lendülettel, izgatottan vágtunk bele. Nem sok tapasztalattal és rutinnal rendelkeztünk, viszont a kiváncsiság fűtötte munka meghozta gyümölcsét. A munkánk egy modern, mai világba tökéletesen passzoló étterem, aminek az **Ízhorizon** fantázianevet adtuk.
 
