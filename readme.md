@@ -25,4 +25,13 @@
 -  [multer](https://www.npmjs.com/package/multer)
 -  [mysql2](https://www.npmjs.com/package/mysql2)
 -  [validator](https://www.npmjs.com/package/validator)
----
+## Használt eszközök: 
+-  [Visual Studio Code](https://code.visualstudio.com/)
+-  [Google Drive](https://workspace.google.com/products/drive/)
+-  [npm](https://www.npmjs.com/)
+-  [Postman](--A MI POSTMANÜNK--)
+-  [DrawSQL](--A MI DRAWSQLÜNK--)
+-  [PhpMyAdmin](--A MI ADATBÁZISUNK--)
+-  [W3Schools](https://www.w3schools.com/)
+-  [StackOverflow](https://stackoverflow.com/questions)
+-  [GitHub](https://github.com/mihaly81/izhorizon)
