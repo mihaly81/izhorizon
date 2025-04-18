@@ -5,7 +5,7 @@
 
 ## Tartalomjegyzék
 
-- [Bevezetés](#bevezetes)
+- [Bevezetés](#A projektről röviden)
 - [Projektről](#projektrol)
 - [Használat](#használat)
 - [Dokumentáció](#dokumentáció)
@@ -13,7 +13,7 @@
 - [Licenc](#licenc)
 
 ---
-# Bevezetes
+# A projektről röviden
 
 
 
