@@ -1,6 +1,7 @@
 # Ízhorizon Éttermünk – Az ízek horizontján!
 
-# Készítette: Gacsó Mihály Norbert
+# Készítette: 
+- Gacsó Mihály Norbert
 
 # Tartalomjegyzék
 
