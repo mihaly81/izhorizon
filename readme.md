@@ -5,7 +5,7 @@
 
 ## Tartalomjegyzék
 
-- [Bevezetés](#Projektről)
+- [A projektről röviden](#Projektről)
 - [Projektről](#projektrol)
 - [Használat](#használat)
 - [Dokumentáció](#dokumentáció)
