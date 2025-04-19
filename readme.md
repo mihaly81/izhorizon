@@ -32,6 +32,8 @@
 -  [validator](https://www.npmjs.com/package/validator)
 
 ```
+ "devDependencies": 
+    "nodemon": "^3.1.9"
 {
   "dependencies": {
     "bcryptjs": "^3.0.2",
