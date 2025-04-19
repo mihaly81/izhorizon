@@ -12,7 +12,40 @@
 - Projektünk ezen részébe is, mint a Frontendbe, nagy lendülettel, izgatottan vágtunk bele. Nem sok tapasztalattal és rutinnal rendelkeztünk, viszont a kiváncsiság fűtötte munka meghozta gyümölcsét. A munkánk egy modern, mai világba tökéletesen passzoló étterem, aminek az **Ízhorizon** fantázianevet adtuk.
 
 ---
+# Rendszer
 *  A Node.js alapú backend rendszer Epxress keretrendszert használ, MySql adatbázissal kommunikál, és számos biztonsági funkcióval rendelkezik (jelszó titkosítás, JWT hitelesítés, adatvalidálás).
+- [DrawSQL](https://drawsql.app/teams/mihaly8/diagrams/izhorizon)
+```
+{
+  "name": "zarovizsga",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.12.0",
+    "start": "^5.1.0",
+    "validator": "^13.12.0"
+  }
+}
+
+```
 
 ## Használt packagek:
 -  [nodemon](https://www.npmjs.com/package/nodemon)
