@@ -14,7 +14,23 @@
 ---
 # Rendszer
 *  A Node.js alapú backend rendszer Epxress keretrendszert használ, MySql adatbázissal kommunikál, és számos biztonsági funkcióval rendelkezik (jelszó titkosítás, JWT hitelesítés, adatvalidálás).
+
 - [DrawSQL](https://drawsql.app/teams/mihaly8/diagrams/izhorizon)
+
+
+
+## Használt packagek:
+-  [nodemon](https://www.npmjs.com/package/nodemon)
+-  [bcryptjs](https://www.npmjs.com/package/bcryptjs)
+-  [cookie-parser](https://www.npmjs.com/package/cookie-parser) 
+-  [cors](https://www.npmjs.com/package/cors)
+-  [dotenv](https://www.npmjs.com/package/dotenv) 
+-  [express](https://www.npmjs.com/package/express) 
+-  [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+-  [multer](https://www.npmjs.com/package/multer)
+-  [mysql2](https://www.npmjs.com/package/mysql2)
+-  [validator](https://www.npmjs.com/package/validator)
+
 ```
 {
   "name": "zarovizsga",
@@ -46,18 +62,7 @@
 }
 
 ```
-
-## Használt packagek:
--  [nodemon](https://www.npmjs.com/package/nodemon)
--  [bcryptjs](https://www.npmjs.com/package/bcryptjs)
--  [cookie-parser](https://www.npmjs.com/package/cookie-parser) 
--  [cors](https://www.npmjs.com/package/cors)
--  [dotenv](https://www.npmjs.com/package/dotenv) 
--  [express](https://www.npmjs.com/package/express) 
--  [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
--  [multer](https://www.npmjs.com/package/multer)
--  [mysql2](https://www.npmjs.com/package/mysql2)
--  [validator](https://www.npmjs.com/package/validator)
+---
 ## Használt eszközök: 
 -  [Visual Studio Code](https://code.visualstudio.com/)
 -  [Google Drive](https://workspace.google.com/products/drive/)
