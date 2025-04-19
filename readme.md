@@ -14,8 +14,11 @@
 ---
 # Rendszer
 *  A Node.js alapú backend rendszer Epxress keretrendszert használ, MySql adatbázissal kommunikál, és számos biztonsági funkcióval rendelkezik (jelszó titkosítás, JWT hitelesítés, adatvalidálás).
-
+## Adatbázis
 - [DrawSQL](https://drawsql.app/teams/mihaly8/diagrams/izhorizon)
+
+## Mappa struktúra
+
 
 
 
@@ -61,3 +64,10 @@
 -  [W3Schools](https://www.w3schools.com/)
 -  [StackOverflow](https://stackoverflow.com/questions)
 -  [GitHub](https://github.com/mihaly81/izhorizon)
+
+## Továbbfejlesztési lehetőségek
+
+- Eredetileg szerettünk volna egy teljesen funkcionáló, működőképes **Admin panelt**. Az admin jogosultsággal rendelkezők lássák a felhasználók adatait (email, profilkép, felhasználó név, aktivitás, vélemények), tudják módosítani őket(törölni/szerkeszteni). Szerettünk volna egy teljesen automata **vélemény** rendszert is, a felhasználó szabadon tudjon írni véleményt, ami meg is jelenik autómatikusan. 
+
+# Frontend
+- [Frontend Repo](https://github.com/nikolett21/niki.frontend)
