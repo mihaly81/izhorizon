@@ -246,68 +246,6 @@ app.put('/api/editPfp', authenticateToken, upload.single('pfp'), (req, res) => {
     });
 });
 
-/*
-// admin login
-
-app.post('/api/admin', (req, res) => {
-    const { email, psw } = req.body;
-    const errors = [];
-
-    if (!validator.isEmail(email)) {
-        errors.push({ error: 'Add meg az admin email címet ' });
-    }
-
-    if (validator.isEmpty(psw)) {
-        errors.push({ error: 'Add meg az admin jelszót' });
-    }
-
-    if (szerepkor !== 1) {
-        errors.push({ error: 'Hiba: Nincs jogosultságod!' });
-    }
-
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
-    }
-
-    const sql = 'SELECT * FROM users WHERE email LIKE ?';
-    pool.query(sql, [email], (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Hiba az SQL-ben' });
-        }
-
-        if (result.length === 0) {
-            return res.status(404).json({ error: 'A felhasználó nem találató' });
-        }
-
-        const user = result[0];
-        if (user.szerepkor !== 1) {
-            return res.status(403).json({ error: 'Nincs admin jogosultság!' });
-        }
-
-        bcrypt.compare(psw, user.psw, (err, isMatch) => {
-            if (err) {
-                return res.status(500).json({ error: 'Hiba a jelszó ellenőrzése során!' });
-            }
-
-            if (isMatch) {
-                const token = jwt.sign({ id: user.user_id, szerepkor: user.szerepkor }, JWT_SECRET, { expiresIn: '1y' });
-
-                res.cookie('auth_token', token, {
-                    httpOnly: true,
-                    secure: false,
-                    sameSite: 'lax',
-                    maxAge: 1000 * 60 * 60 * 24 * 30 * 12
-                });
-
-                return res.status(200).json({ message: 'Sikeres admin bejelentkezés' });
-            } else {
-                return res.status(401).json({ error: 'Rossz a jelszó' });
-            }
-        });
-    });
-});
-*/
-
 // profil szerkesztése
 app.put('/api/editProfile', authenticateToken, upload.single('pfp'), (req, res) => {
     const { name, psw } = req.body;
