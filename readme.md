@@ -2,6 +2,7 @@
 
 # Készítette: 
 - Gacsó Mihály Norbert
+- Kővári Nikolett
 
 
 ---
