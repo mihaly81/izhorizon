@@ -3,9 +3,7 @@
 # Készítette: 
 - Gacsó Mihály Norbert
 
-## Tartalomjegyzék
 
-- [A projektről röviden](#Projektről)
 ---
 # Projektről
 
